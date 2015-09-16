@@ -1,2 +1,5 @@
 # loquacious-turtle
-Dijkstra
+Dijkstra en c:
+  -Lista de adyacencia para representar nodos.
+
+
