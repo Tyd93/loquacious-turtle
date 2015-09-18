@@ -7,6 +7,11 @@
 * http://github.com/tyd93
 */
 
+#ifndef LIMITS_H
+#include <limits.h>
+#define LIMITS_H
+#endif
+
 #ifndef STDLIB_H
 #include <stdlib.h>
 #define STDLIB_H
@@ -25,8 +30,9 @@
 */ 
 
 typedef struct eNodo{
-	int numNodo;		//Referencia al vertice.
-	unsigned int peso;	//Referencia al peso entre vertices. Siempre positivo.
+	int numNodo;			//Referencia al vertice.
+	unsigned int peso;		//Referencia al peso entre vertices. Siempre positivo.
+	unsigned int pesoTotal;	//Referencia a la sumatoria de peso que se le asignara al nodo.
 	struct eNodo *sig;
 }nodo;
 
@@ -51,6 +57,7 @@ nodo *crearNodo(int destino, unsigned int distancia){
 	auxNodo = (nodo *)malloc(sizeof(nodo));
 	auxNodo->numNodo = destino; //Le asignamos la referencia de vertice al nodo.
 	auxNodo->peso = distancia;
+	auxNodo->pesoTotal = INT_MAX;
 	auxNodo->sig = NULL;
 	return auxNodo;
 }
