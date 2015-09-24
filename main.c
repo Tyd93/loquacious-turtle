@@ -35,3 +35,9 @@ int main(int argc, char const *argv[]){
 	imprimirGrafo(g1);
 	return 0;
 }
+
+/*
+* Cambiare pesoTotal hacia los vertices
+* en lugar de los nodos.
+* 22/09/15 21:41
+*/
