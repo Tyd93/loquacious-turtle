@@ -99,7 +99,7 @@ int cargarGrafo(grafo *g){
 		g->arreglo[7].info = p7;
 		//Fin de la asignacion de info. Comienza la asignacion de color.
 		for(int i = 0; i < g->nVertices; i++){
-			g->arreglo[i].color = -1; 			//Asignamos el color el color blanco.
+			g->arreglo[i].color = 1; 			//Asignamos los nodos como no visitados.
 			g->arreglo[i].padre = -1; 			//Padre NULO hasta el momento.
 			g->arreglo[i].pesoTotal = INT_MAX;	//Peso Total INFINITO.
 		}

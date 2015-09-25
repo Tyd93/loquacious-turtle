@@ -69,6 +69,7 @@ colaPrioridad *crearCola(){
 	auxCola->largo = 0;
 	auxCola->ventana = NULL;
 	auxCola->final = NULL;
+	return auxCola;
 }
 
 /*
@@ -92,10 +93,25 @@ int esVaciaCola(colaPrioridad *cp){
 * prioridad.
 * Es importante enviar o igualar a 
 * el puntero "colaPrioridad->ventana".
+* Es AUN mas importante, que el nodo 
+* enviado este apuntando al elemento
+* que sigue del frente de la cola.
 */
 
-nodo *ubicarVentana(nodo *ventana, int prio){
-
+nodoCola *ubicarVentana(nodoCola *ventana, int priori){
+	if(ventana->sig->referenciaPesoVertice >= priori){
+	/* 
+	* Importante: Pregunto por el que sigue de ventana, para luego mandar ventana,
+	* ya que asi me facilita la insercion, ya que la cola es simplemente enlazada.
+	*/
+		return ventana;
+	}
+	ventana = ventana->sig;
+	if(ventana->sig == NULL){
+		return NULL;
+	}
+	ubicarVentana(ventana, priori);
+	return NULL;
 }
 
 /*
@@ -136,9 +152,72 @@ int atencion(colaPrioridad *cp){
 * un nodo destino del grafo.
 */
 
-int llegada(int destino, int pesoDestino){
-	if(){
-		
+int llegada(colaPrioridad *cp, int destino, int pesoDestino){
+	nodoCola *auxNodocola = (nodoCola *)malloc(sizeof(nodoCola));
+	auxNodocola->referenciaVertice = destino;
+	auxNodocola->referenciaPesoVertice = pesoDestino;
+	auxNodocola->sig = NULL;
+	if(esVaciaCola(cp)){
+	//1.- En el caso que no haya ningun nodo en la cola.
+		cp->frente = auxNodocola;
+		cp->ventana = cp->frente;
+		cp->final = cp->frente;
+		cp->largo++;
+		return 1;
 	}
-	return 1;
+	if(cp->largo == 1){
+	//2.- En el caso de que solo haya un elemento en la cola.
+		if(auxNodocola->referenciaPesoVertice <= cp->frente->referenciaPesoVertice){
+		//2a.-Preguntamos si el frente de la cola es mayor al nuevo elemento.
+			cp->frente = auxNodocola;
+			cp->frente->sig = cp->final;
+			cp->ventana = cp->frente;
+		}
+		else{
+		//2b.- En el caso que no lo sea.
+			cp->final = auxNodocola;
+			cp->frente->sig = cp->final;
+			cp->ventana = cp->frente;
+		}
+		cp->largo++;
+		return 1;
+	}
+	else{
+	//3.- Este es el caso mas general. Cuando hay mas de un elemento en la cola.
+		if(auxNodocola->referenciaPesoVertice <= cp->frente->referenciaPesoVertice){
+		//3a.- Preguntamos si nuestro nodo posee mas prioridad que el nodo en frente de la cola.
+			auxNodocola->sig = cp->frente;
+			cp->frente = auxNodocola;
+			cp->ventana = cp->frente;
+			cp->largo++;
+			return 1;
+		}
+		else if(auxNodocola->referenciaPesoVertice > cp->frente->referenciaPesoVertice && auxNodocola->referenciaPesoVertice <= cp->frente->sig->referenciaPesoVertice){
+		//3c.- Si el nodo se encuentra entre el primero y el segundo nodo. (MUY IMPORTANTE si es que hay solo dos elementos.)
+			auxNodocola->sig = cp->frente->sig;
+			cp->frente->sig = auxNodocola;
+			cp->ventana = cp->frente;
+			cp->largo++;
+			return 1;
+		}
+		else if(auxNodocola->referenciaPesoVertice >= cp->final->referenciaPesoVertice){
+		//3b.- Preguntamos si nuestro nodo posee menos prioridad que el nodo que esta en final de la cola.
+			cp->final->sig = auxNodocola;
+			cp->final = auxNodocola;
+			cp->ventana = cp->frente;
+			cp->largo++;
+			return 1;
+		}
+		else{
+		//Llegando a este punto, el nodo puede estar entre el frente y el final.
+			//Ventana apuntara al elemento siguiente 
+			cp->ventana = cp->frente->sig;
+			ubicarVentana(cp->ventana,auxNodocola->referenciaPesoVertice);
+			auxNodocola->sig = cp->ventana->sig;
+			cp->ventana->sig = auxNodocola;
+			cp->ventana = cp->frente;
+			cp->largo++;
+			return 1;
+		}
+	}
 }
