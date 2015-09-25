@@ -45,7 +45,7 @@ typedef struct eNodo{
 
 typedef struct eVertice{
 	char *info;		//Puntero a una cadena de caracteres.
-	int color;		//Usare -1, 0, 1, para representar blanco, gris y negro.
+	int color;		//Usare 0, 1, para representar visitado y no visitado respectivamente.
 	unsigned int pesoTotal;	//Referencia a la sumatoria de peso que se le asignara en Dijkstra.
 	int padre;		//Representara la ubicacion del padre.
 	nodo *vecino;	//Puntero hacia el inicio de la lista de adyacencia.
