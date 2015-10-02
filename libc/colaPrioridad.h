@@ -123,7 +123,7 @@ nodoCola *ubicarVentana(nodoCola *ventana, int priori){
 int atencion(colaPrioridad *cp){
 	if(esVaciaCola(cp)){
 		printf("La cola esta vacia.\n");
-		return 1;
+		return 0;
 	}
 	else{
 		nodoCola *auxNodocola;
@@ -152,6 +152,7 @@ int atencion(colaPrioridad *cp){
 * un nodo destino del grafo.
 */
 
+
 int llegada(colaPrioridad *cp, int destino, int pesoDestino){
 	nodoCola *auxNodocola = (nodoCola *)malloc(sizeof(nodoCola));
 	auxNodocola->referenciaVertice = destino;
@@ -172,15 +173,17 @@ int llegada(colaPrioridad *cp, int destino, int pesoDestino){
 			cp->frente = auxNodocola;
 			cp->frente->sig = cp->final;
 			cp->ventana = cp->frente;
+			cp->largo++;
+			return 1;
 		}
 		else{
 		//2b.- En el caso que no lo sea.
 			cp->final = auxNodocola;
 			cp->frente->sig = cp->final;
 			cp->ventana = cp->frente;
+			cp->largo++;
+			return 1;
 		}
-		cp->largo++;
-		return 1;
 	}
 	else{
 	//3.- Este es el caso mas general. Cuando hay mas de un elemento en la cola.

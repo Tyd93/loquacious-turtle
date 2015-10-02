@@ -40,9 +40,9 @@
 int fueVisitado(grafo *g, int origen){
 	if(g->arreglo[origen].color == 0){
 		printf("El nodo ya ha sido visitado.\n");
-		return 1;
+		return 0;
 	}
-	return 0;
+	return 1;
 }
 
 /*
@@ -90,6 +90,45 @@ int relajacion(colaPrioridad *cp, grafo *g, int actual, int adyacente, int peso)
 	return 0;
 }
 
+
+/*
+* Funcion que creara un archivo diferente
+* cada vez que sea llamada, para representar
+* cada paso que da graphviz.
+*/
+
+int imprimeDijkstra(grafo *g, int nroArchivo){
+	char *nombre = (char *)malloc(2 *sizeof(int)); //Pido memoria para almacenar un INT como STRING.
+	sprintf(nombre,"%i.dot",nroArchivo);
+	//Almaceno el Int en la cadena.
+	FILE *archivo = fopen(nombre,"w");			//El archivo lleva el nombre de INT.
+	//Empiezo con las caracteristicas del grafo.
+	fprintf(archivo, "digraph avance%i {\n",nroArchivo);
+	fprintf(archivo, "\trankdir=LR;\n");
+	fprintf(archivo, "\tnode [style = filled, fillcolor = white, fontcolor = black];\n");
+	fprintf(archivo, "\tedge [color = black];\n");
+	for(int i = 0;i < g->nVertices; i++){
+	//Empezare a imprimir
+		nodo *auxNodo = g->arreglo[i].vecino;
+		while(auxNodo != NULL){
+			int referencia = auxNodo->numNodo;
+			fprintf(archivo, "\t%s->%s [label = %i];\n",g->arreglo[i].info,g->arreglo[referencia].info, auxNodo->peso);
+			fprintf(archivo, "%s [label = %i];\n",g->arreglo[i].info,g->arreglo[i].pesoTotal);
+			fprintf(archivo, "%s [label = %i];\n",g->arreglo[referencia].info,g->arreglo[referencia].pesoTotal);
+			auxNodo = auxNodo->sig;
+		}
+	}
+	fprintf(archivo, "};\n");
+	fclose(archivo);
+	return nroArchivo + 1;	//Leer mas abajo.
+}
+
+/*
+* C es tan podereso...
+* Pero si retornamos el incremento de un INT (i++)
+* simplemente, no pasa nada.
+*/
+
 /*
 * Funcion que representa el algoritmo
 * de Dijkstra para encontrar la ruta de
@@ -98,13 +137,19 @@ int relajacion(colaPrioridad *cp, grafo *g, int actual, int adyacente, int peso)
 
 int dijkstra(grafo *g, int origen){
 	int u = 0;	//Auxiliar.
+	grafo *auxGrafo = g;
+	int nroArchivo = 0;	//Servira para enumerar archivos.
+	int salir = 0;
 	//Creamos la cola de prioridades.
 	colaPrioridad *cp = crearCola();
 	//Agregamos el origen a la cola de prioridad.
-	llegada(cp,origen,g->arreglo[origen].pesoTotal);
-	while(!esVaciaCola(cp)){
+	llegada(cp,origen,auxGrafo->arreglo[origen].pesoTotal);
+	auxGrafo->arreglo[origen].pesoTotal = 0; //Peso del origen
+	nroArchivo = imprimeDijkstra(auxGrafo,nroArchivo);
+	salir = esVaciaCola(cp);
+	while(salir != 1){
 		u = atencion(cp);
-		while(!fueVisitado(g,u)){
+		while(!fueVisitado(auxGrafo,u)){
 		/*
 		* Mientras no encontremos un nodo que
 		* no haya sido visitado, seguiremos
@@ -112,22 +157,24 @@ int dijkstra(grafo *g, int origen){
 		*/
 			u = atencion(cp);
 		}
-		g->arreglo[u].color = 0;
+		auxGrafo->arreglo[u].color = 0;
 		//Marcamos el vertice como "visitado".
-		while(g->arreglo[u].vecino != NULL){
+		while(auxGrafo->arreglo[u].vecino != NULL){
 		//Mientras haya vertices adyacentes a este.
-			int w = retornaPeso(g,u); //Guardamos el peso.
-			if(fueVisitado(g, g->arreglo[u].vecino->numNodo)){
+			int w = retornaPeso(auxGrafo,u); //Guardamos el peso.
+			if(fueVisitado(auxGrafo, auxGrafo->arreglo[u].vecino->numNodo)){
 			//Si no ha sido visitado, procedemos a hacer la relajacion.
 			/*
 			* Nota personal: creo que el metodo de impresion en archivo
 			* deberia estar implementado en esta parte para ir documentando
 			* el paso a paso.
 			*/
-				relajacion(cp,g,u,g->arreglo[u].vecino->numNodo,w);
+				relajacion(cp,auxGrafo,u,auxGrafo->arreglo[u].vecino->numNodo,w);
+				nroArchivo = imprimeDijkstra(auxGrafo,nroArchivo);
 			}
-			g->arreglo[u].vecino = g->arreglo[u].vecino->sig;
+			auxGrafo->arreglo[u].vecino = auxGrafo->arreglo[u].vecino->sig;
 		}
+		salir=esVaciaCola(cp);
 	}
 	return 1;
 }
