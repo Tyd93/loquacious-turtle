@@ -1,0 +1,23 @@
+digraph grafoHermojo {
+	rankdir=LR;
+	node [style = filled, fillcolor = white, fontcolor = black];
+	edge [color = black];
+	Chigualoco->Carino_Botado [label = 8];
+	Chigualoco->La_Calor [label = 6];
+	Chigualoco->Peor_es_nada [label = 10];
+	Salsipuedes->Peor_es_nada [label = 6];
+	Salsipuedes->Chigualoco [label = 7];
+	Peor_es_nada->Carino_Botado [label = 3];
+	Peor_es_nada->Entrepiernas [label = 5];
+	Roma->Las_Coimas [label = 12];
+	Roma->Chigualoco [label = 6];
+	Entrepiernas->Carino_Botado [label = 15];
+	Entrepiernas->Las_Coimas [label = 1];
+	La_Calor->Las_Coimas [label = 2];
+	La_Calor->Roma [label = 7];
+	La_Calor->Chigualoco [label = 9];
+	Las_Coimas->Entrepiernas [label = 6];
+	Las_Coimas->Salsipuedes [label = 15];
+	Carino_Botado->Las_Coimas [label = 6];
+	Carino_Botado->Chigualoco [label = 12];
+};

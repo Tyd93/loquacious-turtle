@@ -28,6 +28,11 @@
 #define DIJKSTRA_H
 #endif
 
+#ifndef IMPRIMIRDOT_H
+#include "libc\imprimirDot.h"
+#define IMPRIMIRDOT_H
+#endif
+
 #define VERTEX 8 //Numero de vertices en el grafo.
 
 /*
@@ -40,14 +45,31 @@ int main(int argc, char const *argv[]){
 	grafo *g1;
 	g1 = crearGrafo(VERTEX);
 	cargarGrafo(g1);
-	agregaConexion(g1,0,1,10);
-	agregaConexion(g1,0,2,11);
-	agregaConexion(g1,0,3,12);
-	agregaConexion(g1,0,4,13);
-	agregaConexion(g1,0,5,14);
-	agregaConexion(g1,0,6,15);
-	agregaConexion(g1,2,3,16);
+	//agregaConexion(Grafo, origen, Destino, peso);
+	agregaConexion(g1,0,2,10);
+	agregaConexion(g1,0,5,6);
+	agregaConexion(g1,0,7,8);
+	agregaConexion(g1,1,0,7);
+	agregaConexion(g1,1,2,6);
+	agregaConexion(g1,2,4,5);
+	agregaConexion(g1,2,7,3);
+	agregaConexion(g1,3,0,6);
+	agregaConexion(g1,3,6,12);
+	agregaConexion(g1,4,6,1);
+	agregaConexion(g1,4,7,15);
+	agregaConexion(g1,5,0,9);
+	agregaConexion(g1,5,3,7);
+	agregaConexion(g1,5,6,2);
+	agregaConexion(g1,6,1,15);
+	agregaConexion(g1,6,4,6);
+	agregaConexion(g1,7,0,12);
+	agregaConexion(g1,7,6,6);
 	imprimirGrafo(g1);
+	imprimeGrafoDotProfe(g1);
+	imprimirGrafoSeba(g1);
+	//Pruebas
+	dijkstra(g1,3);
+	//fin pruebas
 	return 0;
 }
 

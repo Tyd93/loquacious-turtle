@@ -68,9 +68,9 @@ int cargarGrafo(grafo *g){
 		p1 = "Salsipuedes";
 		g->arreglo[1].info = p1;
 		//
-		largo = strlen("Peor es nada") + 1;
+		largo = strlen("Peor_es_nada") + 1;
 		char *p2 = (char *)malloc(largo *sizeof(char));
-		p2 = "Peor es nada";
+		p2 = "Peor_es_nada";
 		g->arreglo[2].info = p2;
 		//
 		largo = strlen("Roma") + 1;
@@ -83,19 +83,19 @@ int cargarGrafo(grafo *g){
 		p4 = "Entrepiernas";
 		g->arreglo[4].info = p4;
 		//
-		largo = strlen("La Calor") + 1;
+		largo = strlen("La_Calor") + 1;
 		char *p5 = (char *)malloc(largo *sizeof(char));
-		p5 = "La Calor";
+		p5 = "La_Calor";
 		g->arreglo[5].info = p5;
 		//
-		largo = strlen("Las Coimas") + 1;
+		largo = strlen("Las_Coimas") + 1;
 		char *p6 = (char *)malloc(largo *sizeof(char));
-		p6 = "Las Coimas";
+		p6 = "Las_Coimas";
 		g->arreglo[6].info = p6;
 		//
-		largo = strlen("Carino Botado") + 1;
+		largo = strlen("Carino_Botado") + 1;
 		char *p7 = (char *)malloc(largo *sizeof(char));
-		p7 = "Carino Botado";
+		p7 = "Carino_Botado";
 		g->arreglo[7].info = p7;
 		//Fin de la asignacion de info. Comienza la asignacion de color.
 		for(int i = 0; i < g->nVertices; i++){
